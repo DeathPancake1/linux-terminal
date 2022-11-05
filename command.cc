@@ -26,7 +26,7 @@
 #include "command.h"
 
 
-char homeDir[1024];
+char* homeDir;
 SimpleCommand::SimpleCommand()
 {
 	// Creat available space for 5 arguments
@@ -247,7 +247,6 @@ Command::execute()
 	}
 	else{
 		for ( int i = 0; i < _numberOfSimpleCommands; i++ ) {
-			char s[1024];
 			openPipe(i,defaultin,defaultout,defaulterr,fdpipe,outfd,errfd);
 			int pid = fork();
 			if ( pid == -1 ) {
@@ -336,7 +335,7 @@ int yyparse(void);
 int 
 main()
 {
-	getcwd(homeDir, 1024);
+	homeDir=getenv("HOME");
 	signal(SIGINT, sigintHandler);
 	signal (SIGCHLD, proc_exit);
 	Command::_currentCommand.prompt();
